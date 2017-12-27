@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>脑回路</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/layout.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<!-- <script type="text/javascript" src="lib/jquery.min.js"></script> -->
+	<script src="http://ajax.microsoft.com/ajax/jquery
+/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/public.js"></script>
+	<script type="text/javascript" src="lib/layer/layer.js"></script>
+	<script type="text/javascript" src="lib/laydate/laydate.js"></script>
+	<script src="lib/laypage/laypage.js"></script>
+	<script type="text/javascript" src="lib/collapse.js"></script>
+	<script type="text/javascript" src="lib/tooltip.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					<h2>HELLO,WORLD...</h2>
+					<p>Nice to meet you...</p>
+				</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">首页</a></li>
+					<li><a href="study.html">学无止境</a></li>
+					<li class="active"><a href="thought.html">脑回路</a></li>
+					<li data-toggle="tooltip" data-placement="bottom" title="建设中..."><a href="#">留言板</a></li>
+					<li><a href="contact.html">联系我</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="content thought">
+		<div class="container-fluid">
+		</div>
+		<div class="page clearfix">
+                <div id="pagination-box" class="fr"></div>
+            </div>
+	</div>
+	<div class="foot">
+		<h2>THOUGHTS</h2>
+		<p>......<i></i>......</p>
+	</div>
+<script>
+$(function(){
+	var $page = $(".pager").html()||1;
+	var html = ""
+	var parm = window.location.href.split("=")[1]||1;
+	$.ajax({
+	   type: "POST",
+	   url: "all_thought.php",
+	   dataType:"json",
+	   data: {'page':parm,'pageSize':'5'},
+	   success: function(msg){
+	   //$.parsejson(msg);
+	   		console.log(typeof msg)
+			 $.map(msg.pageData,function(item){
+			 	var img = item.avatar=="default"?"images/avatar.jpg":item.avatar;
+			 	var icon = item.content.match(/src=\"(\S*)\"\ /)==null?null:item.content.match(/src=\"(\S*)\"\ /)[1];
+			html='<div class="thought-box">'+
+					'<div>'+
+						'<i class="default-avatar" style="background-image:url(\''+img+'\')"></i>'+
+						'<p class="time">'+item.date_entered+'</p>'+
+						'<p class="thought-content">'+
+							'<span class="favorite fr"><i class="iconfont icon-zan"></i>'+item.like_amount+'人喜欢</span>'+
+							'<span class="contents">'+item.content+'</span>'+
+							'<s></s>'+
+						'</p>'+
+					'</div>'+
+				'</div>'
+						
+				$(".thought .container-fluid").append(html)
+			 })
+			laypage({
+			  cont: $('#pagination-box'),
+			  pages: Math.ceil(msg.totalPage/5), //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18
+              //skip: false, //是否开启跳页
+              skin: '#2b2b2b',
+              groups: 3, //连续显示分页数
+              first:1,//设置首页数字，若不显示，设置false
+              last: Math.ceil(msg.totalPage/5), //将尾页显示为数字。若不显示，设置false
+              prev: '\u0020\u25c0', //若不显示，设置false即可
+              next: '\u0020\u25b6', //若不显示，设置false即可
+			  curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
+				var page = location.search.match(/page=(\d+)/);
+				return page ? page[1] : 1;
+			  }(), 
+			  jump: function(e, first){ //触发分页后的回调
+				if(!first){ //一定要加此判断，否则初始时会无限刷新
+				  location.href = '?page='+e.curr;
+				}
+			  }
+			});
+	   }
+	});
+})
+</script>
+</body>
+</html>
