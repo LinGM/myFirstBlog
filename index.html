@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="keywords" content="个人博客,独立博客,林国民的博客,林国民">
+	<meta name="author" content="LinGM,544374882@qq.com">
+	<title>林国民的个人博客</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/layout.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="lib/jquery.min.js"></script>
+	<script type="text/javascript" src="js/public.js"></script>
+	<script type="text/javascript" src="lib/layer/layer.js"></script>
+	<script type="text/javascript" src="lib/collapse.js"></script>
+	<script type="text/javascript" src="lib/tooltip.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					<h2>HELLO,WORLD...</h2>
+					<p>Nice to meet you...</p>
+				</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="首页.html">首页</a></li>
+					<li><a href="学无止境.html">学无止境</a></li>
+					<li><a href="脑回路.html">脑回路</a></li>
+					<li data-toggle="tooltip" data-placement="bottom" title="建设中..."><a href="#">留言板</a></li>
+					<li><a href="联系我.html">联系我</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="content">
+		<div class="banner"></div>
+		<div class="main-content">
+			<p class="motto">
+				<span>学习就是一个你身处迷雾不断摸索的过程，有时候你想要的结果也许就在你触手可及的地方，只是你没找对方向。</span>
+				<s></s><i></i>
+				<b class="border-top"></b>
+				<b class="border-right"></b>
+				<b class="border-bottom"></b>
+				<b class="border-left"></b>
+			</p>
+			<div class="avatar">
+				<div class="flipper">
+					<i class="front"></i>
+					<i class="back"></i>
+				</div>
+			</div>
+			<p class="nikename">@兜兜转转半生闲</p>
+		</div>
+	</div>
+	<div class="foot">
+		<a href="学无止境.html">
+			<h2>ARTICLE</h2>
+			<p>......<i></i>......</p>
+		</a>
+	</div>
+	<script>
+		$(function(){
+
+			// $(".avatar").mouseover(function(){
+			// 	$(this).find("i").addClass("hover")
+			// }).mouseout(function(){
+			// 	$(this).find("i").removeClass("hover")
+			// })
+			$(".motto span").mouseover(function(){
+				if($(".motto b").is(":animated")) return;
+				$(".motto s").fadeOut();
+				$(".motto").find(".border-top,.border-bottom").animate({width:"100%"},500,function(){$(".motto i").fadeOut();})
+				$(".motto").find(".border-right,.border-left").animate({height:"100%"},500)
+			}).mouseout(function(){
+				console.log("out");$(".motto i").fadeIn();
+				$(".motto").find(".border-top,.border-bottom").animate({width:"0"},500,function(){
+					$(".motto s").fadeIn();
+				})
+				$(".motto").find(".border-right,.border-left").animate({height:"0"},500)
+				
+			})
+		})
+	</script>
+</body>
+</html>
